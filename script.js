@@ -28,37 +28,50 @@ if (bookingForm) {
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.textContent;
 
-        submitBtn.textContent = "Storing Booking...";
+        submitBtn.textContent = "Sending Booking...";
         submitBtn.disabled = true;
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
-        const date = document.getElementById('date').value;
-        const time = document.getElementById('time').value;
+        const dateRaw = document.getElementById('date').value; // YYYY-MM-DD
+        const timeRaw = document.getElementById('time').value; // HH:MM
         const message = document.getElementById('message').value;
 
-        // --- GOOGLE SHEETS SETUP ---
-        // 1. Follow the instructions to get your Script URL
-        // 2. Paste it here:
-        const scriptURL = "YOUR_GOOGLE_SCRIPT_URL_HERE";
+        // Split Date
+        const [year, month, day] = dateRaw.split('-');
 
-        const formData = new FormData();
-        formData.append('Name', name);
-        formData.append('Phone', phone);
-        formData.append('Date', date);
-        formData.append('Time', time);
-        formData.append('Requirements', message || 'None');
+        // Split Time
+        const [hour, minute] = timeRaw.split(':');
 
-        // This sends the data to your Google Sheet and triggers a notification
-        fetch(scriptURL, { method: 'POST', body: formData })
-            .then(response => {
-                alert(`Booking saved to Google Sheet! Notification Alert sent to +91 9895557543. Thank you, ${name}!`);
+        const googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeyww6WEJsbpQ22XlqaKb4WO83h1mcbD4EJ0g2dlIkqctsy8w/formResponse";
+
+        const formData = new URLSearchParams();
+        formData.append('entry.240818119', name);
+        formData.append('entry.1901000', phone);
+        formData.append('entry.1397129258_year', year);
+        formData.append('entry.1397129258_month', month);
+        formData.append('entry.1397129258_day', day);
+        formData.append('entry.79144280_hour', hour);
+        formData.append('entry.79144280_minute', minute);
+        formData.append('entry.917475730', message || 'None');
+
+        // Submit to Google Form using 'no-cors' mode 
+        // Note: fetch will fail to "read" the response but the data will reach Google
+        fetch(googleFormURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData.toString()
+        })
+            .then(() => {
+                alert(`Thank you, ${name}! Your booking request has been sent successfully. We will contact you soon!`);
                 bookingForm.reset();
             })
             .catch(error => {
-                // Even if there's a CORS error, the data usually reaches the Sheet correctly
-                alert(`Success! Your booking has been recorded in our records.`);
-                bookingForm.reset();
+                console.error('Error!', error.message);
+                alert('Something went wrong. Please try again or contact us via WhatsApp.');
             })
             .finally(() => {
                 submitBtn.textContent = originalBtnText;

@@ -209,25 +209,27 @@
                     <h2 class="section-title">Book Your Slot</h2>
                     <p>Schedule a visit to our studio for a personalized trial session.</p>
                 </div>
-                <form id="booking-form" class="booking-form">
+                <form id="booking-form" class="booking-form"
+                    action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSeyww6WEJsbpQ22XlqaKb4WO83h1mcbD4EJ0g2dlIkqctsy8w/formResponse"
+                    method="POST">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">Full Name</label>
-                            <input type="text" id="name" placeholder="Your Name" required>
+                            <input type="text" id="name" name="entry.240818119" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" placeholder="Your Phone" required>
+                            <input type="tel" id="phone" name="entry.1901000" placeholder="Your Phone" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="date">Preferred Date</label>
-                            <input type="date" id="date" required>
+                            <input type="date" id="date" name="entry.1397129258" required>
                         </div>
                         <div class="form-group">
                             <label for="time">Preferred Time</label>
-                            <select id="time" required>
+                            <select id="time" name="entry.79144280" required>
                                 <option value="" disabled selected>Select Time Slot</option>
                                 <option value="10:00">10:00 AM</option>
                                 <option value="11:30">11:30 AM</option>
@@ -240,7 +242,8 @@
                     </div>
                     <div class="form-group">
                         <label for="message">Special Requirements (Optional)</label>
-                        <textarea id="message" rows="3" placeholder="Tell us what you're looking for..."></textarea>
+                        <textarea id="message" name="entry.917475730" rows="3"
+                            placeholder="Tell us what you're looking for..."></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Confirm Booking Request</button>
                 </form>
